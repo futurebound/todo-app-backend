@@ -2,18 +2,20 @@ import { Request, Response } from "express"
 import User from "../models/user-model"
 import bcrypt from 'bcrypt'
 
-const createUser = async (request: Request, response: Response) => {
+export const createUser = async (request: Request, response: Response) => {
    try {
       const {name, email, password} = request.body
 
-      const existingUser = await User.find({email})
-      if (existingUser) return response.status(409).send('user aleady exists')
+      // const existingUser = await User.findOne({email})
+      // if (existingUser) {
+      //    return response.status(409).send('user aleady exists')
+      // }
 
       const hashedPassword = await bcrypt.hash(password, 12)
       const user = await User.create({
-         name,
-         email,
-         hashedPassword
+         name: name,
+         email: email,
+         password: hashedPassword
       })
 
       return response.status(201).send({message: 'user created successfully'})
@@ -24,4 +26,4 @@ const createUser = async (request: Request, response: Response) => {
    }
 }
 
-export default createUser
+// export default createUser
