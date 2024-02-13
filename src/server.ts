@@ -9,13 +9,16 @@ const PORT = 3000
 // initialize mongoose DB connction
 connectToDB()
 
+// what usage would look like if doing all routes local to this file
 app.get("/ping", (request: Request, response: Response) => {
    response.send("Pong")
 })
 
-// register routes
+// register routes -> from any routes/ directory files
 app.use('/user', userRoutes)
 
+
+// start the server
 app.listen(PORT, () => {
    console.log("server active")
 })

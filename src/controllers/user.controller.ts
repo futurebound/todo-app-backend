@@ -3,13 +3,13 @@ import User from "../models/user-model"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { Types } from 'mongoose'
-import IUser from '../types'
+import { IUser } from '../types'
 
 
 require('dotenv').config()
-const authenticatedKey = process.env.AUTHENTICATION_KEY
+const authenticationKey = process.env.AUTHENTICATION_KEY
 const getUserToken = (_id:string | Types.ObjectId) => {
-   const authenticatedUserToken = jwt.sign({_id}, authenticatedKey, 
+   const authenticatedUserToken = jwt.sign({_id}, authenticationKey, 
          {expiresIn:'7d'})
    
    return authenticatedUserToken
@@ -41,12 +41,16 @@ export const createUser = async (request: Request, response: Response) => {
 
 export const loginUser = async (request: Request, response: Response) => {
    try {
+      // check if user exists in DB
       const { email, password } : IUser = request.body
       const existingUser = await User.findOne({ email })
       if (!existingUser) {
          return response.status(409).send({ message: 'User doesn\'t exist' })
       }
 
+      // check for correct password, and if correct get an authenticated token
+      //    and return it as well as the logged in user info in response that can
+      //    be used in the front end
       const isSamePassword = await bcrypt.compare(password, existingUser.password)
       if (isSamePassword) {
          const token = getUserToken(existingUser._id)
@@ -66,5 +70,3 @@ export const loginUser = async (request: Request, response: Response) => {
       throw error
    }
 }
-
-// export default createUser
