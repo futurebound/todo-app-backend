@@ -15,10 +15,10 @@ export const getAllCategories = async (request: AuthRequest, response: Response)
          user: user,
       })
       return response.send(categories)
-      
+
    } catch (error) {
       console.log('error in category.controller getAllCategories()', error)
-      response.send({ error: "something went wrong" })
+      response.send({ error: "something went wrong retreiving all categories" })
       throw (error)
    }
 }
@@ -42,7 +42,47 @@ export const createCategory = async (request: AuthRequest, response: Response) =
 
    } catch (error) {
       console.log('error in category.controller createCategory()', error)
-      response.send({ error: "something went wrong" })
+      response.send({ error: "something went wrong creating category" })
+      throw (error)
+   }
+}
+
+export const deleteCategory = async (request: AuthRequest, response: Response) => {
+   try {
+      // get category.id from the front end in AuthRequest body
+      const { id } = request.params
+      await Category.deleteMany({ _id: id })
+      response.send({ message: 'Category deleted'})
+
+   } catch (error) {
+      console.log('error in category.controller deleteCategory()', error)
+      response.send({ error: "something went wrong deleting category" })
+      throw (error)
+   }
+}
+
+export const updateCategory = async (request: AuthRequest, response: Response) => {
+   try {
+      // get category.id from the front end in AuthRequest body
+      const { id } = request.params
+      const { color, icon, isEditable, name } : ICategory = request.body
+      await Category.updateOne(
+         {
+            _id: id
+         },
+         {
+            $set: {
+               name, color, icon, isEditable
+            }
+         }
+      )
+
+      // return response to front end
+      response.send({ message: "Category updated" })
+
+   } catch (error) {
+      console.log('error in category.controller updateCategory()', error)
+      response.send({ error: "something went wrong updating category" })
       throw (error)
    }
 }

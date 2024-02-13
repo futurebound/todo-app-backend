@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import connectToDB from './db'
 import userRoutes from './routes/user.routes'
+import categoryRoutes from './routes/category.routes'
 
 const app = express()
 app.use(express.json())
@@ -16,7 +17,7 @@ app.get("/ping", (request: Request, response: Response) => {
 
 // register routes -> from any routes/ directory files
 app.use('/user', userRoutes)
-
+app.use('/category', categoryRoutes)
 
 // start the server
 app.listen(PORT, () => {
