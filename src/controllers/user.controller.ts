@@ -6,10 +6,10 @@ export const createUser = async (request: Request, response: Response) => {
    try {
       const {name, email, password} = request.body
 
-      // const existingUser = await User.findOne({email})
-      // if (existingUser) {
-      //    return response.status(409).send('user aleady exists')
-      // }
+      const existingUser = await User.findOne({email})
+      if (existingUser) {
+         return response.status(409).send('user aleady exists')
+      }
 
       const hashedPassword = await bcrypt.hash(password, 12)
       const user = await User.create({
