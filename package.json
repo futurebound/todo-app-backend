@@ -7,7 +7,9 @@
     "dev": "ts-node ./src/server.ts && node ./dist/server.js"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.2"
   },
   "devDependencies": {
