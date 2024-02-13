@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const connectionString = 
-   "mongodb+srv://mmdev:<password>@cluster0.rzprfl2.mongodb.net/?retryWrites=true&w=majority"
+   "mongodb+srv://mmdev:AEjVDXJPuIe6tx97@cluster0.rzprfl2.mongodb.net/?retryWrites=true&w=majority"
 
 const connectToDB = async () => {
    try {
