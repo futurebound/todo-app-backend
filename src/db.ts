@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
-require('dotenv').config()
 
+
+require('dotenv').config()
 const dbUser = process.env.MONGODB_USER
 const dbPassword = process.env.MONGODB_PASSWORD
 const dbCluster = process.env.MONGODB_CLUSTER
