@@ -1,5 +1,6 @@
 import express from 'express'
-import { createTask, deleteTask, getAllTasks, getAllTasksByCategory, toggleTaskCompletion } from '../controllers/task.controller'
+import { createTask, deleteTask, getAllCompletedTasks, getAllTasks, 
+   getAllTasksByCategory, getTasksForToday, toggleTaskCompletion } from '../controllers/task.controller'
 import authenticationMiddleware from '../middleware/index'
 
 
@@ -7,15 +8,21 @@ import authenticationMiddleware from '../middleware/index'
 const taskRoutes = express.Router()
 taskRoutes.use(authenticationMiddleware)
 
-// register Task routes
-taskRoutes.route('/getAll').get(getAllTasks)
-taskRoutes.route('/getAllByCategory/:id').get(getAllTasksByCategory)
-
+/* Register Task routes */
+// Create
 taskRoutes.route('/create').post(createTask)
 
+// Retrieve
+taskRoutes.route('/getAll').get(getAllTasks)
+taskRoutes.route('/getAllByCategory/:id').get(getAllTasksByCategory)
+taskRoutes.route('/getAllCompleted').get(getAllCompletedTasks)
+taskRoutes.route('/getAllToday').get(getTasksForToday)
+
+// Update
 taskRoutes.route('/updateCompletion/:id').put(toggleTaskCompletion)
 // taskRoutes.route('/update/:id').put(updateTask)
 
+// Delete
 taskRoutes.route('/delete/:id').delete(deleteTask)
 
 

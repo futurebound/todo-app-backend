@@ -24,8 +24,11 @@ const taskSchema = new mongoose.Schema({
       default: true
    },
    date: {
+      // TODO: incomplete, may need to adjust schema for behavior
       type: String,
+      // type: Date,
       required: true
+      // default:
    }
 },
 {

@@ -29,7 +29,7 @@ export const getAllTasks = async (request: AuthRequest, response: Response) => {
 export const getAllTasksByCategory = async (request: AuthRequest, response: Response) => {
    try {
       const userId = request.user
-      const categoryId = request.params
+      const categoryId = request.params.id
 
       const tasks = await Task.find({
          user: userId,
@@ -40,6 +40,51 @@ export const getAllTasksByCategory = async (request: AuthRequest, response: Resp
    } catch (error) {
       console.log('error in task.controller getAllTasksByCategory()', error)
       response.send({ error: "something went wrong retreiving tasks for this category" })
+      throw (error)
+   }
+}
+
+/**
+ * Returns all the completed Tasks for the logged in User.
+ */
+export const getAllCompletedTasks = async (request: AuthRequest, response: Response) => {
+   try {
+      const userId = request.user
+      // const categoryId = request.params.id
+
+      const tasks = await Task.find({
+         user: userId,
+         isCompleted: true
+      })
+      return response.send(tasks)
+
+   } catch (error) {
+      console.log('error in task.controller getAllCompletedTasks()', error)
+      response.send({ error: "Error fetching completed tasks" })
+      throw (error)
+   }
+}
+
+/**
+ * Returns all the of today's Tasks for the logged in User.
+ */
+export const getTasksForToday = async (request: AuthRequest, response: Response) => {
+   try {
+      // TODO: INCOMPLETE, current bug of not fetching any dates
+      const userId = request.user
+      const currentISODate = new Date()
+      currentISODate.setHours(0, 0, 0, 0)
+      console.log("currentISODate: " + currentISODate.toISOString())
+
+      const tasks = await Task.find({
+         user: userId,
+         date: currentISODate.toISOString()
+      })
+      return response.send(tasks)
+
+   } catch (error) {
+      console.log('error in task.controller getTasksForToday()', error)
+      response.send({ error: "Error fetching todays tasks" })
       throw (error)
    }
 }
@@ -100,6 +145,22 @@ export const deleteTask = async (request: AuthRequest, response: Response) => {
       // get task.id from the front end in AuthRequest body
       const { id } = request.params
       await Task.deleteOne({ _id: id })
+      response.send({ message: 'Task deleted'})
+
+   } catch (error) {
+      console.log('error in task.controller deleteTast()', error)
+      response.send({ error: "something went wrong deleting task" })
+      throw (error)
+   }
+}
+
+// TODO: INCOMPLETE
+export const editTask = async (request: AuthRequest, response: Response) => {
+   try {
+      // get task.id from the front end in AuthRequest body
+      const { _id, categoryId, date, name } : ITask = request.body
+      
+      await Task.updateOne({ _id: _id })
       response.send({ message: 'Task deleted'})
 
    } catch (error) {
