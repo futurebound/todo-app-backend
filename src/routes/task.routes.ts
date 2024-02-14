@@ -1,5 +1,5 @@
 import express from 'express'
-import { createTask, deleteTask, getAllCompletedTasks, getAllTasks, 
+import { createTask, deleteTask, editTask, getAllCompletedTasks, getAllTasks, 
    getAllTasksByCategory, getTasksForToday, toggleTaskCompletion } from '../controllers/task.controller'
 import authenticationMiddleware from '../middleware/index'
 
@@ -20,7 +20,7 @@ taskRoutes.route('/getAllToday').get(getTasksForToday)
 
 // Update
 taskRoutes.route('/updateCompletion/:id').put(toggleTaskCompletion)
-// taskRoutes.route('/update/:id').put(updateTask)
+taskRoutes.route('/edit/:id').put(editTask)
 
 // Delete
 taskRoutes.route('/delete/:id').delete(deleteTask)

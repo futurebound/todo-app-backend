@@ -5,6 +5,14 @@ import { ITask } from "../types"
 
 
 /**
+ * TODO:
+ *    - helper function to confirm that logged in User always matches the 
+ *      userID of any targeted task
+ *       - logged in userID available from implemented middleware @ request.user
+ */
+
+
+/**
  * Returns all the tasks of the logged in user.
  */
 export const getAllTasks = async (request: AuthRequest, response: Response) => {
@@ -136,6 +144,38 @@ export const toggleTaskCompletion = async (request: AuthRequest, response: Respo
    }
 }
 
+// TODO: INCOMPLETE
+export const editTask = async (request: AuthRequest, response: Response) => {
+   try {
+      // get task.id from the front end in AuthRequest body
+      const { id } = request.params
+      const { categoryId, date, name } : ITask = request.body
+      // console.log("request.params: " + request.params.toString())
+      // console.log("request.body: " + request.body.toString())
+
+      const task = await Task.updateOne(
+         { _id: id },
+         {
+            $set: {
+               name: name,
+               categoryId: categoryId,
+               date: date
+            }
+         }
+      )
+
+      // confirm that the task was found successfully
+      if (!task) {
+         return response.status(409).send({ message: "Task doesn't exist "})
+      }
+      response.send({task})
+
+   } catch (error) {
+      console.log('error in task.controller editTask()', error)
+      response.send({ error: "something went wrong editing task" })
+      throw (error)
+   }
+}
 
 /**
  * Deletes a given Task from the given Category for the authenticated User.
@@ -154,18 +194,3 @@ export const deleteTask = async (request: AuthRequest, response: Response) => {
    }
 }
 
-// TODO: INCOMPLETE
-export const editTask = async (request: AuthRequest, response: Response) => {
-   try {
-      // get task.id from the front end in AuthRequest body
-      const { _id, categoryId, date, name } : ITask = request.body
-      
-      await Task.updateOne({ _id: _id })
-      response.send({ message: 'Task deleted'})
-
-   } catch (error) {
-      console.log('error in task.controller deleteTast()', error)
-      response.send({ error: "something went wrong deleting task" })
-      throw (error)
-   }
-}
