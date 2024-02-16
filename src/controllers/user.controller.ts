@@ -8,7 +8,7 @@ import { IUser } from '../types'
 
 require('dotenv').config()
 const authenticationKey = process.env.AUTHENTICATION_KEY
-const getUserToken = (_id:string | Types.ObjectId) => {
+const getUserToken = (_id: string | Types.ObjectId) => {
    const authenticatedUserToken = jwt.sign({_id}, authenticationKey, 
          {expiresIn:'7d'})
    

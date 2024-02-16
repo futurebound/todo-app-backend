@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import cors from "cors"
 import connectToDB from './db'
 import userRoutes from './routes/user.routes'
 import categoryRoutes from './routes/category.routes'
@@ -6,6 +7,14 @@ import taskRoutes from './routes/task.routes'
 
 const app = express()
 app.use(express.json())
+
+const corsOptions = {
+   origin: "*",
+   methods: ["POST", "GET", "PATCH", "DELETE", "OPTIONS"],
+   allowedHeaders: ["Content-Type", "Authorization"]
+}
+app.use(cors(corsOptions))
+
 const PORT = 3000
 
 // initialize mongoose DB connction
