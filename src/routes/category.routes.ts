@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllCategories, createCategory, deleteCategory, updateCategory } from '../controllers/category.contoller'
+import { getAllCategories, createCategory, deleteCategory, updateCategory, getCategoryById } from '../controllers/category.contoller'
 import authenticationMiddleware from '../middleware/index'
 
 const categoryRoutes = express.Router()
@@ -8,6 +8,7 @@ const categoryRoutes = express.Router()
 categoryRoutes.use(authenticationMiddleware)
 
 categoryRoutes.route('/getAll').get(getAllCategories)
+categoryRoutes.route('/get/:id').get(getCategoryById)
 categoryRoutes.route('/create').post(createCategory)
 
 // :id coming from category.controller

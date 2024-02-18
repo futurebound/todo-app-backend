@@ -31,6 +31,7 @@ export const createUser = async (request: Request, response: Response) => {
          password: hashedPassword
       })
 
+      console.log("name: " + name + " email: " + email + " created successfully")
       return response.status(201).send({message: 'user created successfully'})
 
    } catch (error) {
@@ -54,13 +55,17 @@ export const loginUser = async (request: Request, response: Response) => {
       const isSamePassword = await bcrypt.compare(password, existingUser.password)
       if (isSamePassword) {
          const token = getUserToken(existingUser._id)
+
+         console.log("existing user: " + existingUser.name + " email: " + 
+               existingUser.email + " logged in successfully")
          return response.send({
             token,
             user: {
-               email: existingUser.email,
-               name: existingUser.name
+               name: existingUser.name,
+               email: existingUser.email
             }
          })
+
       } else {
          return response.status(400).send({message: 'Invalid login info'})
       }

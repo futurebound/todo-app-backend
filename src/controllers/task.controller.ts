@@ -18,10 +18,10 @@ import { ITask } from "../types"
 export const getAllTasks = async (request: AuthRequest, response: Response) => {
    try {
       const userId = request.user
-
       const tasks = await Task.find({
          user: userId,
       })
+      console.log("retrieved all tasks for user: " + userId)
       return response.send(tasks)
 
    } catch (error) {
@@ -43,6 +43,7 @@ export const getAllTasksByCategory = async (request: AuthRequest, response: Resp
          user: userId,
          categoryId: categoryId
       })
+      console.log("retrieved all tasks by category for user: " + userId)
       return response.send(tasks)
 
    } catch (error) {
@@ -64,6 +65,7 @@ export const getAllCompletedTasks = async (request: AuthRequest, response: Respo
          user: userId,
          isCompleted: true
       })
+      console.log("retrieved all completed tasks for user: " + userId)
       return response.send(tasks)
 
    } catch (error) {
@@ -88,6 +90,8 @@ export const getTasksForToday = async (request: AuthRequest, response: Response)
          user: userId,
          date: currentISODate.toISOString()
       })
+
+      console.log("retrieved all of today's tasks for user: " + userId)
       return response.send(tasks)
 
    } catch (error) {
@@ -113,6 +117,7 @@ export const createTask = async (request: AuthRequest, response: Response) => {
       })
 
       // return response to front end
+      console.log("user: " + userId + " created new task: " + task)
       response.send(task)
 
    } catch (error) {
@@ -168,6 +173,7 @@ export const editTask = async (request: AuthRequest, response: Response) => {
       if (!task) {
          return response.status(409).send({ message: "Task doesn't exist "})
       }
+      console.log("user: " + name + " successfully edited task.id: " + id)
       response.send({task})
 
    } catch (error) {
@@ -185,6 +191,7 @@ export const deleteTask = async (request: AuthRequest, response: Response) => {
       // get task.id from the front end in AuthRequest body
       const { id } = request.params
       await Task.deleteOne({ _id: id })
+      console.log("successfully deleted task.id: " + id)
       response.send({ message: 'Task deleted'})
 
    } catch (error) {
